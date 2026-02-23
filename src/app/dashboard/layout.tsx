@@ -1,10 +1,10 @@
-
 "use client";
 
-import { Landmark, Bell, User, LogOut, Menu, PieChart, Landmark as BankIcon, History, ShieldAlert } from "lucide-react";
+import { Bell, LogOut, Menu, PieChart, History, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
+import { Logo } from "@/components/ui/logo";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,8 +24,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/dashboard")}>
-              <div className="bg-primary p-1.5 rounded-lg shadow-md">
-                <Landmark className="h-6 w-6 text-white" />
+              <div className="bg-white p-1.5 rounded-lg shadow-sm border border-black/5">
+                <Logo className="h-6 w-6" />
               </div>
               <span className="hidden md:inline-block text-xl font-bold text-primary font-headline">rnainstreet Bank</span>
             </div>
@@ -88,7 +88,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <footer className="border-t bg-white py-6 mt-12">
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2 text-primary/60">
-            <Landmark className="h-4 w-4" />
+            <Logo className="h-4 w-4" />
             <p className="text-sm font-medium">&copy; 2024 rnainstreet Bank. Member FDIC.</p>
           </div>
           <div className="flex gap-6 text-sm text-muted-foreground font-medium">
