@@ -1,0 +1,17 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "bank-logo",
+      "description": "MainStreet Bank professional logo",
+      "imageUrl": "https://picsum.photos/seed/bank123/200/200",
+      "imageHint": "bank building logo"
+    },
+    {
+      "id": "user-avatar",
+      "description": "User profile avatar",
+      "imageUrl": "https://picsum.photos/seed/user3028/100/100",
+      "imageHint": "portrait man"
+    }
+  ]
+}
