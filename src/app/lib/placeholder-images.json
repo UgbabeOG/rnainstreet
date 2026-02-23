@@ -10,7 +10,7 @@
     {
       "id": "user-avatar",
       "description": "User profile avatar",
-      "imageUrl": "https://picsum.photos/seed/user3028/100/100",
+      "imageUrl": "/user-photo.jpg",
       "imageHint": "portrait man"
     }
   ]

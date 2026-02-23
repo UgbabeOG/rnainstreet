@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Bell, LogOut, Menu, PieChart, History, ShieldAlert } from "lucide-react";
@@ -5,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { Logo } from "@/components/ui/logo";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +18,7 @@ import {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const userAvatar = PlaceHolderImages.find(img => img.id === "user-avatar")?.imageUrl || "/user-photo.jpg";
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -50,9 +53,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-10 w-10 rounded-full ring-2 ring-primary/20">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src="https://picsum.photos/seed/user3028/100/100" />
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full ring-2 ring-primary/20 p-0 overflow-hidden">
+                  <Avatar className="h-10 w-10 rounded-full">
+                    <AvatarImage src={userAvatar} className="object-cover rounded-full" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold">RF</AvatarFallback>
                   </Avatar>
                 </Button>
