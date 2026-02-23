@@ -18,6 +18,7 @@ import {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  // Ensure we fallback to the local public image
   const userAvatar = PlaceHolderImages.find(img => img.id === "user-avatar")?.imageUrl || "/user-photo.jpg";
 
   return (
@@ -55,7 +56,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full ring-2 ring-primary/20 p-0 overflow-hidden">
                   <Avatar className="h-10 w-10 rounded-full">
-                    <AvatarImage src={userAvatar} className="object-cover rounded-full" />
+                    <AvatarImage 
+                      src={userAvatar} 
+                      className="object-cover rounded-full" 
+                      style={{ borderRadius: '50%' }}
+                    />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold">RF</AvatarFallback>
                   </Avatar>
                 </Button>

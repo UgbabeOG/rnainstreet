@@ -14,22 +14,20 @@ export function Logo({ className }: LogoProps) {
       xmlns="http://www.w3.org/2000/svg"
       className={cn("w-6 h-6", className)}
     >
-      {/* Top Layer */}
+      {/* Bottom Plane */}
       <path
-        d="M2 7L12 2L22 7L12 12L2 7Z"
-        className="fill-primary"
+        d="M2 16L12 11L22 16L12 21L2 16Z"
+        className="fill-primary opacity-40"
       />
-      {/* Middle Layer */}
+      {/* Middle Plane */}
       <path
         d="M2 12L12 7L22 12L12 17L2 12Z"
         className="fill-accent"
-        transform="translate(0, 2)"
       />
-      {/* Bottom Layer */}
+      {/* Top Plane */}
       <path
-        d="M2 17L12 12L22 17L12 22L2 17Z"
-        className="fill-primary opacity-60"
-        transform="translate(0, 4)"
+        d="M2 8L12 3L22 8L12 13L2 8Z"
+        className="fill-primary"
       />
     </svg>
   );
