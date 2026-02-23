@@ -1,13 +1,11 @@
-
 "use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Landmark, Lock, Mail, Loader2, Info } from "lucide-react";
+import { Landmark, Lock, Mail, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
@@ -56,14 +54,6 @@ export default function LoginPage() {
           </CardHeader>
           <form onSubmit={handleLogin}>
             <CardContent className="space-y-4">
-              <Alert className="bg-secondary/50 border-primary/20">
-                <Info className="h-4 w-4 text-primary" />
-                <AlertTitle className="text-primary text-sm font-bold">Demo Credentials</AlertTitle>
-                <AlertDescription className="text-xs text-muted-foreground">
-                  Email: ryan.ford3028@gmail.com <br />
-                  Password: Funmilayo247$
-                </AlertDescription>
-              </Alert>
               <div className="space-y-2">
                 <div className="relative">
                   <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
