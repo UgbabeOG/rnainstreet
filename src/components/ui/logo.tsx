@@ -16,17 +16,17 @@ export function Logo({ className }: LogoProps) {
     >
       {/* Bottom Plane */}
       <path
-        d="M2 16L12 11L22 16L12 21L2 16Z"
-        className="fill-primary opacity-40"
+        d="M3 17L12 13L21 17L12 21L3 17Z"
+        className="fill-primary opacity-30"
       />
       {/* Middle Plane */}
       <path
-        d="M2 12L12 7L22 12L12 17L2 12Z"
+        d="M3 11L12 7L21 11L12 15L3 11Z"
         className="fill-accent"
       />
       {/* Top Plane */}
       <path
-        d="M2 8L12 3L22 8L12 13L2 8Z"
+        d="M3 5L12 1L21 5L12 9L3 5Z"
         className="fill-primary"
       />
     </svg>
