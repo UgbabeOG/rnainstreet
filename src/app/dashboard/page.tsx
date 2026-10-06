@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useState } from "react";
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -9,7 +10,6 @@ import {
   Wallet, 
   CreditCard, 
   Lock, 
-  AlertTriangle,
   Search,
   Download,
   Filter,
@@ -19,6 +19,23 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -39,9 +56,17 @@ const TRANSACTIONS = [
 
 export default function DashboardPage() {
   const totalBalance = "$2,000,000.00";
+  const [transferDialogOpen, setTransferDialogOpen] = useState(false);
+  const [restrictionNoticeOpen, setRestrictionNoticeOpen] = useState(false);
+
+  const handleTransfer = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setTransferDialogOpen(false);
+    setRestrictionNoticeOpen(true);
+  };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
+    <div id="overview" className="space-y-8 max-w-7xl mx-auto">
      
       {/* Welcome Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -50,7 +75,7 @@ export default function DashboardPage() {
           <p className="text-muted-foreground">Here is what is happening with your accounts today.</p>
         </div>
         <div className="flex gap-3">
-          <Button className="font-bold flex gap-2">
+          <Button className="font-bold flex gap-2" onClick={() => setTransferDialogOpen(true)}>
             <TrendingUp className="w-4 h-4" /> Send Money
           </Button>
           <Button variant="outline" className="font-bold flex gap-2 border-primary/20 text-primary">
@@ -84,17 +109,14 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent className="relative mt-4">
-            <div className="p-4 bg-white/10 rounded-xl backdrop-blur-md border border-white/20 flex items-center gap-4">
-              <div className="h-10 w-10 rounded-full bg-destructive flex items-center justify-center animate-pulse">
+            <div id="security" className="p-4 bg-white/10 rounded-xl backdrop-blur-md border border-white/20 flex items-center gap-4">
+              <div className="h-10 w-10 rounded-full bg-white/20 flex items-center justify-center">
                 <Lock className="w-5 h-5 text-white" />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-bold text-white">Account Status: Frozen</p>
-                <p className="text-xs text-white/70">Post No Debit (PND) active. Please contact support for verification.</p>
+                <p className="text-sm font-bold text-white">Account Security</p>
+                <p className="text-xs text-white/70">Keep your sign-in details private and contact support if you need assistance.</p>
               </div>
-              <Button size="sm" variant="ghost" className="text-white hover:bg-white/20 border border-white/30 text-xs font-bold">
-                View Details
-              </Button>
             </div>
           </CardContent>
         </Card>
@@ -126,14 +148,8 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Alerts */}
-      <div className="flex items-center gap-3 p-4 bg-destructive/10 border border-destructive/20 rounded-xl text-destructive animate-in slide-in-from-right-4 duration-1000">
-        <AlertTriangle className="w-5 h-5 flex-shrink-0" />
-        <p className="text-sm font-bold">Important Notice: Your account is currently under review. Online transfers are temporarily disabled.</p>
-      </div>
-
       {/* Transactions Section */}
-      <Card className="shadow-xl border-none">
+      <Card id="transactions" className="shadow-xl border-none">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <div>
             <CardTitle className="text-xl font-bold text-primary">Recent Transactions</CardTitle>
@@ -196,12 +212,51 @@ export default function DashboardPage() {
             </Table>
           </div>
           <div className="flex items-center justify-center mt-6">
-            <Button variant="link" className="text-primary font-bold hover:underline">
-              View All Transactions
+            <Button asChild variant="link" className="text-primary font-bold hover:underline">
+              <a href="#transactions">
+                View All Transactions
+              </a>
             </Button>
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={transferDialogOpen} onOpenChange={setTransferDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Send money</DialogTitle>
+            <DialogDescription>Enter the recipient and amount to try a transfer.</DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleTransfer} className="space-y-4">
+            <div className="space-y-2">
+              <label htmlFor="transfer-recipient" className="text-sm font-medium">Recipient</label>
+              <Input id="transfer-recipient" name="recipient" placeholder="Name or account number" required />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="transfer-amount" className="text-sm font-medium">Amount</label>
+              <Input id="transfer-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required />
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setTransferDialogOpen(false)}>Cancel</Button>
+              <Button type="submit">Try transfer</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <AlertDialog open={restrictionNoticeOpen} onOpenChange={setRestrictionNoticeOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Transfer unsuccessful</AlertDialogTitle>
+            <AlertDialogDescription>
+              This transfer could not be completed because your account is restricted. Please contact support for assistance.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction>Close</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

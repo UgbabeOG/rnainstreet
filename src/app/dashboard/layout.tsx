@@ -1,10 +1,12 @@
 
 "use client";
 
+import { useState } from "react";
 import { Bell, LogOut, Menu, PieChart, History, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import {
   DropdownMenu,
@@ -17,6 +19,7 @@ import {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   // Using the absolute path to the public folder image
   const userAvatar = "/user-photo.jpg";
 
@@ -26,22 +29,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <header className="sticky top-0 z-50 w-full border-b bg-white/70 backdrop-blur-xl">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/dashboard")}>
+            <Link href="/dashboard" className="flex items-center gap-2">
               <div className="bg-white p-1.5 rounded-lg shadow-sm border border-black/5">
                 <Logo className="h-6 w-6" />
               </div>
               <span className="hidden md:inline-block text-xl font-bold text-primary font-headline">rnainstreet Bank</span>
-            </div>
+            </Link>
             <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-              <button className="text-primary font-bold border-b-2 border-primary pb-1 flex items-center gap-2">
+              <a href="#overview" className="text-primary font-bold border-b-2 border-primary pb-1 flex items-center gap-2">
                 <PieChart className="w-4 h-4" /> Overview
-              </button>
-              <button className="text-muted-foreground hover:text-primary flex items-center gap-2">
+              </a>
+              <a href="#transactions" className="text-muted-foreground hover:text-primary flex items-center gap-2">
                 <History className="w-4 h-4" /> History
-              </button>
-              <button className="text-muted-foreground hover:text-primary flex items-center gap-2">
+              </a>
+              <a href="#security" className="text-muted-foreground hover:text-primary flex items-center gap-2">
                 <ShieldAlert className="w-4 h-4" /> Security
-              </button>
+              </a>
             </nav>
           </div>
           
@@ -79,11 +82,31 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               </DropdownMenuContent>
             </DropdownMenu>
             
-            <Button variant="ghost" size="icon" className="md:hidden text-primary">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden text-primary"
+              aria-label={mobileNavOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={mobileNavOpen}
+              onClick={() => setMobileNavOpen((open) => !open)}
+            >
               <Menu className="h-6 w-6" />
             </Button>
           </div>
         </div>
+        {mobileNavOpen && (
+          <nav className="md:hidden border-t px-4 py-3 flex flex-col gap-3 text-sm font-medium">
+            <a href="#overview" onClick={() => setMobileNavOpen(false)} className="flex items-center gap-2 text-primary">
+              <PieChart className="w-4 h-4" /> Overview
+            </a>
+            <a href="#transactions" onClick={() => setMobileNavOpen(false)} className="flex items-center gap-2 text-muted-foreground hover:text-primary">
+              <History className="w-4 h-4" /> History
+            </a>
+            <a href="#security" onClick={() => setMobileNavOpen(false)} className="flex items-center gap-2 text-muted-foreground hover:text-primary">
+              <ShieldAlert className="w-4 h-4" /> Security
+            </a>
+          </nav>
+        )}
       </header>
 
       {/* Main Content */}
