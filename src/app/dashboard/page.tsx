@@ -29,24 +29,24 @@ import {
 } from "@/components/ui/table";
 
 const TRANSACTIONS = [
-  { id: 1, type: "Debit", entity: "Amazon.com Marketplace", amount: 45.20, date: "Feb 24, 2024", status: "Completed", category: "Shopping" },
-  { id: 2, type: "Credit", entity: "MainStreet Corp - Payroll", amount: 4500.00, date: "Feb 23, 2024", status: "Completed", category: "Salary" },
-  { id: 3, type: "Debit", entity: "Starbucks Coffee #129", amount: 6.50, date: "Feb 22, 2024", status: "Completed", category: "Dining" },
-  { id: 4, type: "Debit", entity: "Skyline Apartments - Rent", amount: 2200.00, date: "Feb 21, 2024", status: "Completed", category: "Housing" },
-  { id: 5, type: "Debit", entity: "MainStreet ATM #02 - Withdrawal", amount: 200.00, date: "Feb 20, 2024", status: "Completed", category: "Cash" },
-  { id: 6, type: "Debit", entity: "Netflix.com Subscription", amount: 15.99, date: "Feb 18, 2024", status: "Completed", category: "Entertainment" },
-  { id: 7, type: "Debit", entity: "Shell Gas Station", amount: 64.30, date: "Feb 15, 2024", status: "Completed", category: "Transport" },
+  { id: 1, type: "Credit", entity: "stocks and bonds payment", amount: 2500000, date: "Oct 5, 2026", status: "Successful", category: "Investments" },
+  { id: 2, type: "Debit", entity: "stocks and bonds payment", amount: 125000, date: "Oct 2, 2026", status: "Successful", category: "Investments" },
+  { id: 3, type: "Debit", entity: "stocks and bonds payment", amount: 100000, date: "Oct 1, 2026", status: "Successful", category: "Investments" },
+  { id: 4, type: "Debit", entity: "stocks and bonds payment", amount: 75000, date: "Sep 29, 2026", status: "Successful", category: "Investments" },
+  { id: 5, type: "Debit", entity: "stocks and bonds payment", amount: 150000, date: "Sep 24, 2026", status: "Successful", category: "Investments" },
+  { id: 6, type: "Debit", entity: "stocks and bonds payment", amount: 50000, date: "Sep 20, 2026", status: "Successful", category: "Investments" },
 ];
 
 export default function DashboardPage() {
-  const totalBalance = "$671,893.00";
+  const totalBalance = "$2,000,000.00";
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
+     
       {/* Welcome Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary">Good Morning, Ryan</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-primary">Good Morning, Bella Karen Mendoza</h1>
           <p className="text-muted-foreground">Here is what is happening with your accounts today.</p>
         </div>
         <div className="flex gap-3">
@@ -108,7 +108,7 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$12,450.00</div>
+                <div className="text-2xl font-bold">$2,500,000.00</div>
               <div className="text-xs text-accent font-medium mt-1">+12% from last month</div>
             </CardContent>
           </Card>
@@ -119,7 +119,7 @@ export default function DashboardPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">$4,892.40</div>
+              <div className="text-2xl font-bold">$500,000.00</div>
               <div className="text-xs text-muted-foreground mt-1">On track with budget</div>
             </CardContent>
           </Card>
@@ -137,7 +137,7 @@ export default function DashboardPage() {
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
           <div>
             <CardTitle className="text-xl font-bold text-primary">Recent Transactions</CardTitle>
-            <CardDescription>A list of your most recent banking activity.</CardDescription>
+            <CardDescription>Recent banking activities for this account.</CardDescription>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative hidden md:block">
@@ -157,7 +157,7 @@ export default function DashboardPage() {
             <Table>
               <TableHeader className="bg-secondary/30">
                 <TableRow>
-                  <TableHead className="font-bold text-primary">Entity</TableHead>
+                  <TableHead className="font-bold text-primary">Description</TableHead>
                   <TableHead className="font-bold text-primary">Date</TableHead>
                   <TableHead className="font-bold text-primary">Category</TableHead>
                   <TableHead className="font-bold text-primary">Status</TableHead>

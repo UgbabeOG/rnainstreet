@@ -3,8 +3,9 @@
 ## Core Features:
 
 - Login Simulation: Simulate login for demo user ryan.ford3028@gmail.com with password Funmilayo247$.
-- Balance Display: Display a total balance of $671,893, with a note indicating the account is frozen due to a post no debit.
-- Transaction History: Display a simulated transaction history for the demo account.
+- Demo Profile: Display the name Bella Karen Mendoza.
+- Balance Display: Display a simulated total balance of $2,000,000, with a note indicating the account is frozen due to a post no debit.
+- Transaction History: Display clearly labeled simulated stocks and bonds payments totaling $2,500,000 inbound and $500,000 outbound.
 
 ## Style Guidelines:
 

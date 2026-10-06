@@ -57,18 +57,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   <Avatar className="h-10 w-10">
                     <AvatarImage 
                       src={userAvatar} 
-                      alt="Ryan Ford"
+                      alt="Bella Karen Mendoza"
                       className="object-cover" 
                     />
-                    <AvatarFallback className="bg-primary/10 text-primary font-bold">RF</AvatarFallback>
+                    <AvatarFallback className="bg-primary/10 text-primary font-bold">BM</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-bold leading-none">Ryan Ford</p>
-                    <p className="text-xs leading-none text-muted-foreground">ryan.ford3028@gmail.com</p>
+                    <p className="text-sm font-bold leading-none">Bella Karen Mendoza</p>
+                    <p className="text-xs leading-none text-muted-foreground">karenmedozaaa@gmail.com</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />

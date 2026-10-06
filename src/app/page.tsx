@@ -31,7 +31,7 @@ export default function LoginPage() {
 
     // Simulation logic
     setTimeout(() => {
-      if (email === "ryan.ford3028@gmail.com" && password === "Funmilayo247$") {
+      if (email === "karenmedozaaa@gmail.com" && password === "Doza@K1") {
         router.push("/dashboard");
       } else {
         setLoading(false);
