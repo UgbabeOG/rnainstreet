@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Bell, LogOut, Menu, PieChart, History, ShieldAlert } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -17,11 +17,39 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+type FailedTransferNotification = {
+  bankName: string;
+  amount: string;
+};
+
+function isFailedTransferNotification(value: unknown): value is FailedTransferNotification {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "bankName" in value &&
+    typeof value.bankName === "string" &&
+    "amount" in value &&
+    typeof value.amount === "string"
+  );
+}
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [notificationOpen, setNotificationOpen] = useState(false);
+  const [failedTransfer, setFailedTransfer] = useState<FailedTransferNotification | null>(null);
   // Using the absolute path to the public folder image
   const userAvatar = "/user-photo.jpg";
+
+  useEffect(() => {
+    const handleTransferFailed = (event: Event) => {
+      if (!(event instanceof CustomEvent) || !isFailedTransferNotification(event.detail)) return;
+      setFailedTransfer(event.detail);
+    };
+
+    window.addEventListener("transfer-failed", handleTransferFailed);
+    return () => window.removeEventListener("transfer-failed", handleTransferFailed);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -49,10 +77,42 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
           
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="text-muted-foreground relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full ring-2 ring-white" />
-            </Button>
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground relative"
+                aria-label="Notifications"
+                aria-expanded={notificationOpen}
+                onClick={() => setNotificationOpen((open) => !open)}
+              >
+                <Bell className="h-5 w-5" />
+                {failedTransfer && <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full ring-2 ring-white" />}
+              </Button>
+              {notificationOpen && (
+                <div role="region" aria-label="Notifications" className="absolute right-0 top-full z-50 mt-2 w-80 rounded-lg border bg-white p-4 shadow-xl">
+                  <h2 className="mb-3 font-bold text-primary">Notifications</h2>
+                  {failedTransfer ? (
+                    <div className="space-y-3">
+                      <div className="rounded-md border-l-4 border-destructive bg-destructive/5 p-3">
+                        <p className="font-bold text-destructive">Transfer failed</p>
+                        <p className="mt-1 text-sm text-foreground">
+                          Your transfer to {failedTransfer.bankName} for ${Number(failedTransfer.amount).toFixed(2)} could not be completed.
+                        </p>
+                      </div>
+                      <div className="rounded-md border-l-4 border-destructive bg-destructive/5 p-3">
+                        <p className="font-extrabold text-destructive">Account restricted</p>
+                        <p className="mt-1 text-sm font-semibold text-foreground">
+                          Transfers are disabled. Please contact support for assistance.
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">You have no new notifications.</p>
+                  )}
+                </div>
+              )}
+            </div>
             
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

@@ -13,21 +13,13 @@ import {
   Search,
   Download,
   Filter,
-  MoreVertical
+  MoreVertical,
+  Loader2
 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 import {
   Dialog,
   DialogContent,
@@ -57,12 +49,27 @@ const TRANSACTIONS = [
 export default function DashboardPage() {
   const totalBalance = "$2,000,000.00";
   const [transferDialogOpen, setTransferDialogOpen] = useState(false);
-  const [restrictionNoticeOpen, setRestrictionNoticeOpen] = useState(false);
+  const [isProcessingTransfer, setIsProcessingTransfer] = useState(false);
+  const [accountRestricted, setAccountRestricted] = useState(false);
+  const [failedTransfer, setFailedTransfer] = useState<{ bankName: string; amount: string } | null>(null);
 
   const handleTransfer = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setTransferDialogOpen(false);
-    setRestrictionNoticeOpen(true);
+    if (isProcessingTransfer) return;
+
+    const formData = new FormData(event.currentTarget);
+    const transfer = {
+      bankName: String(formData.get("bankName")),
+      amount: String(formData.get("amount")),
+    };
+    setIsProcessingTransfer(true);
+    window.setTimeout(() => {
+      setIsProcessingTransfer(false);
+      setTransferDialogOpen(false);
+      setAccountRestricted(true);
+      setFailedTransfer(transfer);
+      window.dispatchEvent(new CustomEvent("transfer-failed", { detail: transfer }));
+    }, 4500);
   };
 
   return (
@@ -148,6 +155,25 @@ export default function DashboardPage() {
         </div>
       </div>
 
+      {accountRestricted && (
+        <div role="alert" className="flex items-start gap-3 rounded-xl border-2 border-destructive bg-destructive/10 p-5 text-destructive">
+          <Lock className="mt-0.5 h-5 w-5 flex-shrink-0" />
+          <div>
+            <p className="font-extrabold">Account restricted: transfers are disabled.</p>
+            <p className="mt-1 text-sm font-bold">Please contact support for assistance with your account.</p>
+          </div>
+        </div>
+      )}
+
+      {failedTransfer && (
+        <div role="status" className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 text-destructive">
+          <p className="font-bold">Transfer unsuccessful</p>
+          <p className="mt-1 text-sm">
+            Your transfer to {failedTransfer.bankName} for ${Number(failedTransfer.amount).toFixed(2)} could not be completed.
+          </p>
+        </div>
+      )}
+
       {/* Transactions Section */}
       <Card id="transactions" className="shadow-xl border-none">
         <CardHeader className="flex flex-row items-center justify-between space-y-0">
@@ -221,7 +247,12 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      <Dialog open={transferDialogOpen} onOpenChange={setTransferDialogOpen}>
+      <Dialog
+        open={transferDialogOpen}
+        onOpenChange={(open) => {
+          if (!isProcessingTransfer) setTransferDialogOpen(open);
+        }}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Send money</DialogTitle>
@@ -249,26 +280,22 @@ export default function DashboardPage() {
               <Input id="transfer-pin" name="transactionPin" type="password" inputMode="numeric" autoComplete="off" placeholder="Enter transaction PIN" required />
             </div>
             <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setTransferDialogOpen(false)}>Cancel</Button>
-              <Button type="submit">Try transfer</Button>
+              <Button type="button" variant="outline" onClick={() => setTransferDialogOpen(false)} disabled={isProcessingTransfer}>Cancel</Button>
+              <Button type="submit" disabled={isProcessingTransfer}>
+                {isProcessingTransfer ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  "Send"
+                )}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
 
-      <AlertDialog open={restrictionNoticeOpen} onOpenChange={setRestrictionNoticeOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Transfer unsuccessful</AlertDialogTitle>
-            <AlertDialogDescription>
-              This transfer could not be completed because your account is restricted. Please contact support for assistance.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction>Close</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }
