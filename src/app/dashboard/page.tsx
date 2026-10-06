@@ -52,6 +52,23 @@ export default function DashboardPage() {
   const [isProcessingTransfer, setIsProcessingTransfer] = useState(false);
   const [accountRestricted, setAccountRestricted] = useState(false);
   const [failedTransfer, setFailedTransfer] = useState<{ bankName: string; amount: string } | null>(null);
+  const [recipientName, setRecipientName] = useState("");
+
+  const handleRecipientDetailsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const form = event.currentTarget.form;
+    if (!form) return;
+
+    const formData = new FormData(form);
+    const bankName = String(formData.get("bankName")).trim().toLowerCase();
+    const routingNumber = String(formData.get("routingNumber")).trim();
+    const accountNumber = String(formData.get("accountNumber")).trim();
+    const isLanceLarsenAccount =
+      bankName === "heritage federal credit union" &&
+      routingNumber === "281378108" &&
+      accountNumber === "10800001220734";
+
+    setRecipientName(isLanceLarsenAccount ? "Name : Lance Larsen" : "");
+  };
 
   const handleTransfer = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -250,7 +267,10 @@ export default function DashboardPage() {
       <Dialog
         open={transferDialogOpen}
         onOpenChange={(open) => {
-          if (!isProcessingTransfer) setTransferDialogOpen(open);
+          if (!isProcessingTransfer) {
+            if (open) setRecipientName("");
+            setTransferDialogOpen(open);
+          }
         }}
       >
         <DialogContent>
@@ -261,15 +281,19 @@ export default function DashboardPage() {
           <form onSubmit={handleTransfer} className="space-y-4">
             <div className="space-y-2">
               <label htmlFor="transfer-bank-name" className="text-sm font-medium">Bank name</label>
-              <Input id="transfer-bank-name" name="bankName" autoComplete="organization" placeholder="Enter bank name" required />
+              <Input id="transfer-bank-name" name="bankName" autoComplete="organization" placeholder="Enter bank name" onChange={handleRecipientDetailsChange} required />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="transfer-recipient-name" className="text-sm font-medium">Name</label>
+              <Input id="transfer-recipient-name" name="recipientName" autoComplete="name" placeholder="Enter recipient name" value={recipientName} onChange={(event) => setRecipientName(event.currentTarget.value)} required />
             </div>
             <div className="space-y-2">
               <label htmlFor="transfer-routing-number" className="text-sm font-medium">Routing number</label>
-              <Input id="transfer-routing-number" name="routingNumber" inputMode="numeric" autoComplete="off" placeholder="Enter routing number" required />
+              <Input id="transfer-routing-number" name="routingNumber" inputMode="numeric" autoComplete="off" placeholder="Enter routing number" onChange={handleRecipientDetailsChange} required />
             </div>
             <div className="space-y-2">
               <label htmlFor="transfer-account-number" className="text-sm font-medium">Account number</label>
-              <Input id="transfer-account-number" name="accountNumber" inputMode="numeric" autoComplete="off" placeholder="Enter account number" required />
+              <Input id="transfer-account-number" name="accountNumber" inputMode="numeric" autoComplete="off" placeholder="Enter account number" onChange={handleRecipientDetailsChange} required />
             </div>
             <div className="space-y-2">
               <label htmlFor="transfer-amount" className="text-sm font-medium">Amount to send</label>
