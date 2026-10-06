@@ -225,16 +225,28 @@ export default function DashboardPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Send money</DialogTitle>
-            <DialogDescription>Enter the recipient and amount to try a transfer.</DialogDescription>
+            <DialogDescription>Enter the destination bank details and amount to try a transfer.</DialogDescription>
           </DialogHeader>
           <form onSubmit={handleTransfer} className="space-y-4">
             <div className="space-y-2">
-              <label htmlFor="transfer-recipient" className="text-sm font-medium">Recipient</label>
-              <Input id="transfer-recipient" name="recipient" placeholder="Name or account number" required />
+              <label htmlFor="transfer-bank-name" className="text-sm font-medium">Bank name</label>
+              <Input id="transfer-bank-name" name="bankName" autoComplete="organization" placeholder="Enter bank name" required />
             </div>
             <div className="space-y-2">
-              <label htmlFor="transfer-amount" className="text-sm font-medium">Amount</label>
-              <Input id="transfer-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required />
+              <label htmlFor="transfer-routing-number" className="text-sm font-medium">Routing number</label>
+              <Input id="transfer-routing-number" name="routingNumber" inputMode="numeric" autoComplete="off" placeholder="Enter routing number" required />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="transfer-account-number" className="text-sm font-medium">Account number</label>
+              <Input id="transfer-account-number" name="accountNumber" inputMode="numeric" autoComplete="off" placeholder="Enter account number" required />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="transfer-amount" className="text-sm font-medium">Amount to send</label>
+              <Input id="transfer-amount" name="amount" type="number" min="0.01" step="0.01" inputMode="decimal" placeholder="0.00" required />
+            </div>
+            <div className="space-y-2">
+              <label htmlFor="transfer-pin" className="text-sm font-medium">Transaction PIN</label>
+              <Input id="transfer-pin" name="transactionPin" type="password" inputMode="numeric" autoComplete="off" placeholder="Enter transaction PIN" required />
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setTransferDialogOpen(false)}>Cancel</Button>
